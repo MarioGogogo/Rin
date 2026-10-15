@@ -512,6 +512,18 @@
     "wordpress": {
       "desc": "WordPressからエクスポートされたXMLファイルをアップロードする",
       "title": "WordPressからインポート"
+    },
+    "moments": {
+      "enable": {
+        "title": "動態を有効にする",
+        "desc": "上部ナビゲーションバーの「動態」入り口の開閉"
+      }
+    },
+    "friends": {
+      "enable": {
+        "title": "友人を有効にする",
+        "desc": "上部ナビゲーションバーの「友人」入り口の開閉"
+      }
     }
   },
   "sitename": "サイト名",

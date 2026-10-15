@@ -521,6 +521,18 @@
     "wordpress": {
       "desc": "上傳 WordPress 匯出的 XML 文件",
       "title": "從 WordPress 匯入"
+    },
+    "moments": {
+      "enable": {
+        "title": "啟用動態",
+        "desc": "開啟/關閉頂部導航欄中的「動態」入口"
+      }
+    },
+    "friends": {
+      "enable": {
+        "title": "啟用朋友們",
+        "desc": "開啟/關閉頂部導航欄中的「朋友們」入口"
+      }
     }
   },
   "sitename": "網站名稱",

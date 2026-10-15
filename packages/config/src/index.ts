@@ -14,6 +14,8 @@ export const CLIENT_CONFIG_DEFAULTS = new Map(
     "theme.color": "#fc466b",
     "comment.enabled": true,
     "login.enabled": true,
+    "moments.enabled": false,
+    "friends.enabled": false,
     "site.name": "Rin",
     "site.description": "A lightweight personal blogging system",
     "site.avatar": "",

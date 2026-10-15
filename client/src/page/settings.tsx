@@ -441,6 +441,22 @@ export function Settings() {
             }}
           />
           <ItemSwitch
+            title={t("settings.moments.enable.title")}
+            description={t("settings.moments.enable.desc")}
+            checked={clientConfig.getBoolean("moments.enabled")}
+            onChange={(checked) => {
+              setConfigValue("client", "moments.enabled", checked);
+            }}
+          />
+          <ItemSwitch
+            title={t("settings.friends.enable.title")}
+            description={t("settings.friends.enable.desc")}
+            checked={clientConfig.getBoolean("friends.enabled")}
+            onChange={(checked) => {
+              setConfigValue("client", "friends.enabled", checked);
+            }}
+          />
+          <ItemSwitch
             title={t("settings.counter.enable.title")}
             description={t("settings.counter.enable.desc")}
             checked={clientConfig.getBoolean("counter.enabled")}

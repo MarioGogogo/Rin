@@ -521,6 +521,18 @@
     "wordpress": {
       "desc": "Upload the XML file exported from WordPress",
       "title": "Import from WordPress"
+    },
+    "moments": {
+      "enable": {
+        "title": "Enable Moments",
+        "desc": "Show/hide the Moments tab in the top navigation bar"
+      }
+    },
+    "friends": {
+      "enable": {
+        "title": "Enable Friends",
+        "desc": "Show/hide the Friends tab in the top navigation bar"
+      }
     }
   },
   "sitename": "Site Name",

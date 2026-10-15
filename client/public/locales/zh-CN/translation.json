@@ -521,6 +521,18 @@
     "wordpress": {
       "desc": "上传 WordPress 导出的 XML 文件",
       "title": "从 WordPress 导入"
+    },
+    "moments": {
+      "enable": {
+        "title": "启用动态",
+        "desc": "开启/关闭顶部导航栏中的「动态」入口"
+      }
+    },
+    "friends": {
+      "enable": {
+        "title": "启用朋友们",
+        "desc": "开启/关闭顶部导航栏中的「朋友们」入口"
+      }
     }
   },
   "sitename": "站点名称",
