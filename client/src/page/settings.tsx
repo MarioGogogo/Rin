@@ -13,6 +13,8 @@ import {
   normalizeHeaderBehavior,
   normalizeHeaderLayout,
 } from "../components/site-header/layout-options";
+import { ARTICLE_WIDTH_OPTIONS, normalizeArticleWidth } from "../components/article-width-options";
+import { ArticleWidthPreview } from "../components/article-width-preview";
 import { FEED_CARD_VARIANTS, normalizeFeedCardVariant } from "../components/feed-card-options";
 import { FeedCardPreview } from "../components/feed-card-preview";
 import { FEED_LAYOUT_OPTIONS, normalizeFeedLayout } from "../components/feed-layout-options";
@@ -99,6 +101,7 @@ export function Settings() {
   const themeColorValue = normalizeThemeColor(String(clientConfig.get("theme.color") ?? "#fc466b"));
   const feedLayoutValue = normalizeFeedLayout(String(clientConfig.get("feed.layout") ?? "list"));
   const feedCardVariantValue = normalizeFeedCardVariant(String(clientConfig.get("feed.card_variant") ?? "default"));
+  const articleWidthValue = normalizeArticleWidth(String(clientConfig.get("article.width") ?? "normal"));
   const previewSiteName = String(clientConfig.get("site.name") ?? clientConfig.default("site.name") ?? "Rin");
   const previewSiteAvatar = String(clientConfig.get("site.avatar") ?? clientConfig.default("site.avatar") ?? "");
 
@@ -334,6 +337,47 @@ export function Settings() {
                         description={t(`settings.feed_card.preview.${value}`)}
                         onClick={() => {
                           setConfigValue("client", "feed.card_variant", value);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </SettingsCardBody>
+              </div>
+              <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
+                <SettingsCardRow
+                  header={
+                    <SettingsCardHeader
+                      title={t("settings.article_width.title")}
+                      description={t("settings.article_width.desc")}
+                    />
+                  }
+                  action={
+                    <SearchableSelect
+                      value={articleWidthValue}
+                      onChange={(value) => {
+                        setConfigValue("client", "article.width", value);
+                      }}
+                      options={ARTICLE_WIDTH_OPTIONS.map((value) => ({
+                        value,
+                        label: t(`settings.article_width.options.${value}`),
+                      }))}
+                      placeholder={t("settings.article_width.title")}
+                      emptyLabel={t("no_more")}
+                      searchable={false}
+                    />
+                  }
+                />
+                <SettingsCardBody>
+                  <div className="grid gap-3 md:grid-cols-3">
+                    {ARTICLE_WIDTH_OPTIONS.map((value) => (
+                      <ArticleWidthPreview
+                        key={value}
+                        width={value}
+                        selected={articleWidthValue === value}
+                        title={t(`settings.article_width.options.${value}`)}
+                        description={t(`settings.article_width.preview.${value}`)}
+                        onClick={() => {
+                          setConfigValue("client", "article.width", value);
                         }}
                       />
                     ))}
