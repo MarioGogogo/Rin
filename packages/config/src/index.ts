@@ -80,6 +80,11 @@ export class ConfigWrapper {
     return undefined;
   }
 
+  // 返回存储的原始值：空字符串表示「用户已显式清空」，不回退到默认值
+  getRaw<T>(key: string) {
+    return this.config[key] as T | undefined;
+  }
+
   default<T>(key: string) {
     return this.defaultConfig.get(key) as T;
   }
