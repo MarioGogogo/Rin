@@ -63,9 +63,10 @@ export const initContainerMiddleware = createMiddleware<{
                 return new CacheImpl(db, c.env, "server.config", "database");
             }));
 
+        // 配置必须可靠持久化，固定走 D1；S3 未配置时 s3 模式会静默丢失写入
         const clientConfig = await container.get('clientConfig', async () => profileAsync(c, "init_client_config", async () => {
                 const { CacheImpl } = await import('../utils/cache');
-                return new CacheImpl(db, c.env, "client.config");
+                return new CacheImpl(db, c.env, "client.config", "database");
             }));
 
         const jwt = await container.get('jwt', async () => profileAsync(c, "init_jwt", async () => {
