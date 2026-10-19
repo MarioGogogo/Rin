@@ -275,6 +275,16 @@
     "untitled": "Untitled feed",
     "updated_at": "Updated at {{date}}"
   },
+  "reaction": {
+    "title": "Reactions",
+    "type": {
+      "like": "Like",
+      "love": "Love",
+      "haha": "Haha",
+      "wow": "Wow",
+      "sad": "Sad"
+    }
+  },
   "reload": "Retry",
   "reset": "Reset",
   "save": "Save",
@@ -305,6 +315,12 @@
       "enable": {
         "desc": "Enable statistics for article PV and UV",
         "title": "Enable traffic statistics"
+      }
+    },
+    "reaction": {
+      "enable": {
+        "title": "Show post reactions",
+        "desc": "Display emoji reactions below article content for visitors."
       }
     },
     "favicon": {
@@ -512,6 +528,41 @@
         "normal": "The default article width, best for plain reading.",
         "wide": "30% wider than normal, great for code blocks and tables.",
         "full": "Fill every available bit of the browser width beside the TOC."
+      }
+    },
+    "article_typography": {
+      "font_size": {
+        "title": "Article font size",
+        "desc": "Text size of article body content.",
+        "options": {
+          "small": "Small",
+          "normal": "Normal",
+          "large": "Large",
+          "xlarge": "Extra large"
+        }
+      },
+      "line_height": {
+        "title": "Article line height",
+        "desc": "Line spacing of article body content.",
+        "options": {
+          "compact": "Compact",
+          "normal": "Normal",
+          "relaxed": "Relaxed"
+        }
+      },
+      "font_family": {
+        "title": "Article font",
+        "desc": "Typeface used for article body content.",
+        "options": {
+          "sans": "Sans-serif",
+          "serif": "Serif"
+        }
+      },
+      "preview": {
+        "title": "Typography preview",
+        "desc": "Preview of the current typography settings.",
+        "heading": "A quick brown fox jumps",
+        "body": "This is how your article body text will look with the selected typography settings."
       }
     },
     "theme_color": {

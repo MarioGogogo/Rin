@@ -275,6 +275,16 @@
     "untitled": "未命名 Feed",
     "updated_at": "更新時間：{{date}}"
   },
+  "reaction": {
+    "title": "表情反應",
+    "type": {
+      "like": "讚",
+      "love": "喜歡",
+      "haha": "哈哈",
+      "wow": "驚訝",
+      "sad": "難過"
+    }
+  },
   "reload": "重試",
   "reset": "重設",
   "save": "保存",
@@ -305,6 +315,12 @@
       "enable": {
         "desc": "啟用統計文章 PV 與 UV 功能",
         "title": "啟用訪問量統計"
+      }
+    },
+    "reaction": {
+      "enable": {
+        "title": "顯示文章表情反應",
+        "desc": "在文章內容下方展示表情反應，訪客免登入即可互動。"
       }
     },
     "favicon": {
@@ -512,6 +528,41 @@
         "normal": "保持預設的文章寬度，適合純文字閱讀。",
         "wide": "在常規寬度基礎上再加 30%，適合程式碼區塊和表格較多的文章。",
         "full": "撐滿瀏覽器中除目錄以外的可用寬度。"
+      }
+    },
+    "article_typography": {
+      "font_size": {
+        "title": "文章字號",
+        "desc": "文章正文的文字大小（不影響標題）。",
+        "options": {
+          "small": "小",
+          "normal": "常規",
+          "large": "大",
+          "xlarge": "超大"
+        }
+      },
+      "line_height": {
+        "title": "文章行距",
+        "desc": "文章正文的行間距。",
+        "options": {
+          "compact": "緊湊",
+          "normal": "常規",
+          "relaxed": "寬鬆"
+        }
+      },
+      "font_family": {
+        "title": "文章字體",
+        "desc": "文章正文使用的字體。",
+        "options": {
+          "sans": "無襯線",
+          "serif": "襯線"
+        }
+      },
+      "preview": {
+        "title": "排版預覽",
+        "desc": "目前排版設定的即時效果。",
+        "heading": "極光推送的安裝與配置",
+        "body": "這是一段範例正文，用於預覽目前選擇的字號、行距與字體效果。"
       }
     },
     "theme_color": {

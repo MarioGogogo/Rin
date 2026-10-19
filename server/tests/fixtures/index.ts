@@ -83,6 +83,19 @@ export function createMockDB() {
             FOREIGN KEY (feed_id) REFERENCES feeds(id) ON DELETE CASCADE
         );
 
+        -- Feed reactions table
+        CREATE TABLE IF NOT EXISTS feed_reactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            feed_id INTEGER NOT NULL,
+            visitor_hash TEXT NOT NULL,
+            reaction TEXT NOT NULL,
+            created_at INTEGER DEFAULT (unixepoch()),
+            updated_at INTEGER DEFAULT (unixepoch()),
+            FOREIGN KEY (feed_id) REFERENCES feeds(id) ON DELETE CASCADE
+        );
+        CREATE UNIQUE INDEX IF NOT EXISTS feed_reactions_feed_visitor_idx ON feed_reactions(feed_id, visitor_hash);
+        CREATE INDEX IF NOT EXISTS feed_reactions_feed_reaction_idx ON feed_reactions(feed_id, reaction);
+
         -- Info table
         CREATE TABLE IF NOT EXISTS info (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

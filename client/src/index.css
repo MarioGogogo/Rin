@@ -20,6 +20,13 @@ body {
   font-family: Cantarell, "Source Han Serif CN VF", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif !important;
 }
 
+/* 文章排版个性化：变量由 article-typography-options.ts 注入 root（见 settings 个性化卡片） */
+.toc-content {
+  font-size: var(--article-font-size, 1rem);
+  line-height: var(--article-line-height, 1.75);
+  font-family: var(--article-font-family, inherit);
+}
+
 textarea:focus {
   outline: none;
 }

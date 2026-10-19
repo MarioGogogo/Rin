@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { index, integer, sqliteTable, text, unique } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, unique, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 const created_at = integer("created_at", { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull();
 const updated_at = integer("updated_at", { mode: 'timestamp' }).default(sql`(unixepoch())`).notNull();
@@ -54,6 +54,18 @@ export const visitStats = sqliteTable("visit_stats", {
     hllData: text("hll_data").default("").notNull(),
     updatedAt: updated_at,
 });
+
+export const feedReactions = sqliteTable("feed_reactions", {
+    id: integer("id").primaryKey(),
+    feedId: integer("feed_id").references(() => feeds.id, { onDelete: 'cascade' }).notNull(),
+    visitorHash: text("visitor_hash").notNull(),
+    reaction: text("reaction").notNull(),
+    createdAt: created_at,
+    updatedAt: updated_at,
+}, (table) => ({
+    feedVisitorIdx: uniqueIndex("feed_reactions_feed_visitor_idx").on(table.feedId, table.visitorHash),
+    feedReactionIdx: index("feed_reactions_feed_reaction_idx").on(table.feedId, table.reaction),
+}));
 
 export const info = sqliteTable("info", {
     key: text("key").notNull().unique(),

@@ -15,6 +15,20 @@ import {
 } from "../components/site-header/layout-options";
 import { ARTICLE_WIDTH_OPTIONS, normalizeArticleWidth } from "../components/article-width-options";
 import { ArticleWidthPreview } from "../components/article-width-preview";
+import {
+  ARTICLE_FONT_FAMILY_OPTIONS,
+  ARTICLE_FONT_FAMILY_VALUE,
+  ARTICLE_FONT_SIZE_OPTIONS,
+  ARTICLE_FONT_SIZE_VALUE,
+  ARTICLE_LINE_HEIGHT_OPTIONS,
+  ARTICLE_LINE_HEIGHT_VALUE,
+  applyArticleTypography,
+  applyArticleTypographyFromConfig,
+  normalizeArticleFontFamily,
+  normalizeArticleFontSize,
+  normalizeArticleLineHeight,
+} from "../components/article-typography-options";
+import { SettingsPreviewCard } from "../components/settings-preview-card";
 import { FEED_CARD_VARIANTS, normalizeFeedCardVariant } from "../components/feed-card-options";
 import { FeedCardPreview } from "../components/feed-card-preview";
 import { FEED_LAYOUT_OPTIONS, normalizeFeedLayout } from "../components/feed-layout-options";
@@ -81,6 +95,7 @@ export function Settings() {
         setHasStoredAiApiKey(state.hasStoredAiApiKey);
         mergeSessionConfig(state.draft.clientConfig);
         applyThemeColor(getDraftThemeColor(state.draft));
+        applyArticleTypographyFromConfig(state.draft.clientConfig);
       })
       .catch((err: any) => {
         showAlert(t("settings.get_config_failed$message", { message: err.message }));
@@ -92,6 +107,7 @@ export function Settings() {
 
     return () => {
       applyThemeColor(getDraftThemeColor(initialDraftRef.current));
+      applyArticleTypographyFromConfig(initialDraftRef.current.clientConfig);
     };
   }, [showAlert, t]);
 
@@ -102,6 +118,9 @@ export function Settings() {
   const feedLayoutValue = normalizeFeedLayout(String(clientConfig.get("feed.layout") ?? "list"));
   const feedCardVariantValue = normalizeFeedCardVariant(String(clientConfig.get("feed.card_variant") ?? "default"));
   const articleWidthValue = normalizeArticleWidth(String(clientConfig.get("article.width") ?? "normal"));
+  const articleFontSizeValue = normalizeArticleFontSize(String(clientConfig.get("article.font_size") ?? "normal"));
+  const articleLineHeightValue = normalizeArticleLineHeight(String(clientConfig.get("article.line_height") ?? "normal"));
+  const articleFontFamilyValue = normalizeArticleFontFamily(String(clientConfig.get("article.font_family") ?? "sans"));
   const previewSiteName = String(clientConfig.get("site.name") ?? clientConfig.default("site.name") ?? "Rin");
   const previewSiteAvatar = String(clientConfig.get("site.avatar") ?? clientConfig.default("site.avatar") ?? "");
 
@@ -112,6 +131,19 @@ export function Settings() {
   function handleReset() {
     setDraft(initialDraft);
     applyThemeColor(getDraftThemeColor(initialDraft));
+    applyArticleTypographyFromConfig(initialDraft.clientConfig);
+  }
+
+  function updateArticleTypography(
+    key: "article.font_size" | "article.line_height" | "article.font_family",
+    value: string,
+  ) {
+    setConfigValue("client", key, value);
+    applyArticleTypography({
+      fontSize: normalizeArticleFontSize(String(key === "article.font_size" ? value : clientConfig.get("article.font_size") ?? "normal")),
+      lineHeight: normalizeArticleLineHeight(String(key === "article.line_height" ? value : clientConfig.get("article.line_height") ?? "normal")),
+      fontFamily: normalizeArticleFontFamily(String(key === "article.font_family" ? value : clientConfig.get("article.font_family") ?? "sans")),
+    });
   }
 
   async function handleSave() {
@@ -388,6 +420,111 @@ export function Settings() {
                 <SettingsCardRow
                   header={
                     <SettingsCardHeader
+                      title={t("settings.article_typography.font_size.title")}
+                      description={t("settings.article_typography.font_size.desc")}
+                    />
+                  }
+                  action={
+                    <SearchableSelect
+                      value={articleFontSizeValue}
+                      onChange={(value) => {
+                        updateArticleTypography("article.font_size", value);
+                      }}
+                      options={ARTICLE_FONT_SIZE_OPTIONS.map((value) => ({
+                        value,
+                        label: t(`settings.article_typography.font_size.options.${value}`),
+                      }))}
+                      placeholder={t("settings.article_typography.font_size.title")}
+                      emptyLabel={t("no_more")}
+                      searchable={false}
+                    />
+                  }
+                />
+                <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
+                  <SettingsCardRow
+                    header={
+                      <SettingsCardHeader
+                        title={t("settings.article_typography.line_height.title")}
+                        description={t("settings.article_typography.line_height.desc")}
+                      />
+                    }
+                    action={
+                      <SearchableSelect
+                        value={articleLineHeightValue}
+                        onChange={(value) => {
+                          updateArticleTypography("article.line_height", value);
+                        }}
+                        options={ARTICLE_LINE_HEIGHT_OPTIONS.map((value) => ({
+                          value,
+                          label: t(`settings.article_typography.line_height.options.${value}`),
+                        }))}
+                        placeholder={t("settings.article_typography.line_height.title")}
+                        emptyLabel={t("no_more")}
+                        searchable={false}
+                      />
+                    }
+                  />
+                </div>
+                <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
+                  <SettingsCardRow
+                    header={
+                      <SettingsCardHeader
+                        title={t("settings.article_typography.font_family.title")}
+                        description={t("settings.article_typography.font_family.desc")}
+                      />
+                    }
+                    action={
+                      <SearchableSelect
+                        value={articleFontFamilyValue}
+                        onChange={(value) => {
+                          updateArticleTypography("article.font_family", value);
+                        }}
+                        options={ARTICLE_FONT_FAMILY_OPTIONS.map((value) => ({
+                          value,
+                          label: t(`settings.article_typography.font_family.options.${value}`),
+                        }))}
+                        placeholder={t("settings.article_typography.font_family.title")}
+                        emptyLabel={t("no_more")}
+                        searchable={false}
+                      />
+                    }
+                  />
+                </div>
+                <SettingsCardBody>
+                  <div className="grid gap-3 md:grid-cols-2">
+                    <SettingsPreviewCard
+                      selected
+                      title={t("settings.article_typography.preview.title")}
+                      description={t("settings.article_typography.preview.desc")}
+                      onClick={() => {}}
+                      preview={
+                        <div className="w-full space-y-2">
+                          <p
+                            className="t-primary"
+                            style={{ fontSize: ARTICLE_FONT_SIZE_VALUE[articleFontSizeValue], fontFamily: ARTICLE_FONT_FAMILY_VALUE[articleFontFamilyValue] }}
+                          >
+                            {t("settings.article_typography.preview.heading")}
+                          </p>
+                          <p
+                            className="t-secondary"
+                            style={{
+                              fontSize: ARTICLE_FONT_SIZE_VALUE[articleFontSizeValue],
+                              lineHeight: ARTICLE_LINE_HEIGHT_VALUE[articleLineHeightValue],
+                              fontFamily: ARTICLE_FONT_FAMILY_VALUE[articleFontFamilyValue],
+                            }}
+                          >
+                            {t("settings.article_typography.preview.body")}
+                          </p>
+                        </div>
+                      }
+                    />
+                  </div>
+                </SettingsCardBody>
+              </div>
+              <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
+                <SettingsCardRow
+                  header={
+                    <SettingsCardHeader
                       title={t("settings.theme_color.title")}
                       description={t("settings.theme_color.desc")}
                     />
@@ -506,6 +643,14 @@ export function Settings() {
             checked={clientConfig.getBoolean("counter.enabled")}
             onChange={(checked) => {
               setConfigValue("client", "counter.enabled", checked);
+            }}
+          />
+          <ItemSwitch
+            title={t("settings.reaction.enable.title")}
+            description={t("settings.reaction.enable.desc")}
+            checked={clientConfig.getBoolean("reaction.enabled")}
+            onChange={(checked) => {
+              setConfigValue("client", "reaction.enabled", checked);
             }}
           />
           <ItemSwitch

@@ -6,6 +6,7 @@ import { FaviconService } from "../services/favicon";
 import { FeedService, SearchService, WordPressService } from "../services/feed";
 import { FriendService } from "../services/friends";
 import { MomentsService } from "../services/moments";
+import { ReactionService } from "../services/reactions";
 import { RSSService } from "../services/rss";
 import { SitemapService } from "../services/sitemap";
 import { BlobService, StorageService } from "../services/storage";
@@ -20,6 +21,7 @@ export function registerRoutes(app: RinApp) {
   app.route("/wp", WordPressService());
   app.route("/tag", TagService());
   app.route("/comment", CommentService());
+  app.route("/reaction", ReactionService());
   app.route("/storage", StorageService());
   app.route("/blob", BlobService());
   app.route("/friend", FriendService());

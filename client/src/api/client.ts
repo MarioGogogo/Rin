@@ -20,6 +20,8 @@ import type {
   TagDetail,
   Comment,
   CreateCommentRequest,
+  FeedReactionsResponse,
+  ReactionType,
   Friend,
   FriendListResponse,
   CreateFriendRequest,
@@ -142,6 +144,8 @@ export type {
   TagDetail,
   Comment,
   CreateCommentRequest,
+  FeedReactionsResponse,
+  ReactionType,
   Friend,
   FriendListResponse,
   CreateFriendRequest,
@@ -361,6 +365,23 @@ class CommentAPI {
   // DELETE /api/comment/:id
   async delete(id: number): Promise<ApiResponse<void>> {
     return this.http.delete<void>(`/api/comment/${id}`);
+  }
+}
+
+/**
+ * Reaction API methods
+ */
+class ReactionAPI {
+  constructor(private http: HttpClient) {}
+
+  // GET /api/reaction/:feed
+  async get(feedId: number): Promise<ApiResponse<FeedReactionsResponse>> {
+    return this.http.get<FeedReactionsResponse>(`/api/reaction/${feedId}`);
+  }
+
+  // POST /api/reaction/:feed
+  async toggle(feedId: number, reaction: ReactionType): Promise<ApiResponse<FeedReactionsResponse>> {
+    return this.http.post<FeedReactionsResponse>(`/api/reaction/${feedId}`, { reaction });
   }
 }
 
@@ -654,6 +675,7 @@ export class ApiClient {
   feed: FeedAPI;
   tag: TagAPI;
   comment: CommentAPI;
+  reaction: ReactionAPI;
   user: UserAPI;
   friend: FriendAPI;
   moments: MomentsAPI;
@@ -670,6 +692,7 @@ export class ApiClient {
     this.feed = new FeedAPI(this.http);
     this.tag = new TagAPI(this.http);
     this.comment = new CommentAPI(this.http);
+    this.reaction = new ReactionAPI(this.http);
     this.user = new UserAPI(this.http);
     this.friend = new FriendAPI(this.http);
     this.moments = new MomentsAPI(this.http);

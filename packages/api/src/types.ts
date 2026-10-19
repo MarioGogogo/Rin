@@ -193,6 +193,25 @@ export interface CreateCommentRequest {
 }
 
 // ============================================================================
+// Reaction Types
+// ============================================================================
+
+export const REACTION_TYPES = ["like", "love", "haha", "wow", "sad"] as const;
+
+export type ReactionType = (typeof REACTION_TYPES)[number];
+
+export type FeedReactionCounts = Record<ReactionType, number>;
+
+export interface FeedReactionsResponse {
+  counts: FeedReactionCounts;
+  mine: ReactionType | null;
+}
+
+export interface ToggleReactionRequest {
+  reaction: ReactionType;
+}
+
+// ============================================================================
 // Friend Types
 // ============================================================================
 
@@ -335,6 +354,10 @@ export const API_PATHS = {
   COMMENT_LIST: (feedId: number) => `/api/comment/${feedId}`,
   COMMENT_CREATE: (feedId: number) => `/api/comment/${feedId}`,
   COMMENT_DELETE: (id: number) => `/api/comment/${id}`,
+
+  // Reaction
+  REACTION_GET: (feedId: number) => `/api/reaction/${feedId}`,
+  REACTION_TOGGLE: (feedId: number) => `/api/reaction/${feedId}`,
 
   // Friend
   FRIEND_LIST: '/api/friend',
