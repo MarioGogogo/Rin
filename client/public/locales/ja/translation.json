@@ -589,6 +589,14 @@
         "title": "友人を有効にする",
         "desc": "上部ナビゲーションバーの「友人」入り口の開閉"
       }
+    },
+    "home_version": {
+      "title": "ホームのバージョン",
+      "desc": "トップページのレイアウトを選択します。v2 は紹介エリアとカードグリッドを備えた新しいトップページです。",
+      "options": {
+        "v1": "クラシック (v1)",
+        "v2": "リニューアル (v2)"
+      }
     }
   },
   "sitename": "サイト名",
@@ -822,5 +830,51 @@
   "sort_latest": "新着",
   "sort_popular": "人気",
   "total_tags": "全 {{count}} 個のタグ",
-  "anonymous": "匿名"
+  "anonymous": "匿名",
+  "home_v2": {
+    "nav": {
+      "articles": "記事",
+      "timeline": "タイムライン",
+      "tags": "タグ",
+      "about": "について",
+      "search": "検索..."
+    },
+    "hero": {
+      "badge": "好奇心を持ち続ける · 創作を続ける",
+      "greeting": "こんにちは、",
+      "total$count_one": "記事 {{count}} 本を公開中",
+      "total$count_other": "記事 {{count}} 本を公開中",
+      "footnote": "継続メンテナンス · {{year}}"
+    },
+    "card": {
+      "untitled": "無題",
+      "published": "公開",
+      "updated": "更新",
+      "vip_badge": "VIP 限定",
+      "vip_summary_hint": "VIP 限定の記事です。登録すると全文が読めます。",
+      "reads": "閲覧",
+      "unlock_read": "続きを読む（解除）",
+      "read_more": "続きを読む"
+    },
+    "category": {
+      "all": "すべて"
+    },
+    "pagination": {
+      "prev": "前へ",
+      "next": "次へ"
+    },
+    "sidebar": {
+      "latest": "最新の記事",
+      "tags": "タグ市場",
+      "tags_all": "すべて",
+      "rss_title": "RSS 購読",
+      "rss_desc": "新しい記事が公開されるとすぐにリーダーへ届きます。",
+      "rss_action": "購読する"
+    }
+  },
+  "vip_only": "VIP 限定",
+  "vip_locked": {
+    "title": "この記事は VIP 限定です",
+    "desc": "全文は購読メンバーにのみ公開されています。お楽しみに。"
+  }
 }

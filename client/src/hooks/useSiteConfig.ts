@@ -4,6 +4,7 @@ import { normalizeArticleFontFamily, normalizeArticleFontSize, normalizeArticleL
 import { normalizeArticleWidth } from "../components/article-width-options";
 import { normalizeFeedCardVariant } from "../components/feed-card-options";
 import { normalizeFeedLayout } from "../components/feed-layout-options";
+import { normalizeHomeVersion } from "../components/home-version-options";
 
 // Site configuration keys
 export const SITE_CONFIG_KEYS = {
@@ -14,6 +15,7 @@ export const SITE_CONFIG_KEYS = {
     pageSize: "site.page_size",
     feedLayout: "feed.layout",
     feedCardVariant: "feed.card_variant",
+    homeVersion: "home.version",
     articleWidth: "article.width",
     articleFontSize: "article.font_size",
     articleLineHeight: "article.line_height",
@@ -43,6 +45,7 @@ export function useSiteConfig() {
         headerBehavior: config.get<string>(SITE_CONFIG_KEYS.headerBehavior) || "fixed",
         feedLayout: normalizeFeedLayout(config.get<string>(SITE_CONFIG_KEYS.feedLayout) || "list"),
         feedCardVariant: normalizeFeedCardVariant(config.get<string>(SITE_CONFIG_KEYS.feedCardVariant) || "default"),
+        homeVersion: normalizeHomeVersion(config.get<string>(SITE_CONFIG_KEYS.homeVersion) || "v1"),
         articleWidth: normalizeArticleWidth(config.get<string>(SITE_CONFIG_KEYS.articleWidth) || "normal"),
         articleFontSize: normalizeArticleFontSize(config.get<string>(SITE_CONFIG_KEYS.articleFontSize) || "normal"),
         articleLineHeight: normalizeArticleLineHeight(config.get<string>(SITE_CONFIG_KEYS.articleLineHeight) || "normal"),

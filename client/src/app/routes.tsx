@@ -15,6 +15,7 @@ import { CompatTasksPage } from "../page/compat-tasks";
 import { ErrorPage } from "../page/error";
 import { FeedPage, TOCHeader } from "../page/feed";
 import { FeedsPage } from "../page/feeds";
+import { HomeV2Page } from "../components/home-v2";
 import { FriendsPage } from "../page/friends";
 import { HealthPage } from "../page/health";
 import { HashtagPage } from "../page/hashtag";
@@ -36,9 +37,9 @@ export function AppRoutes() {
 
   return (
     <Switch>
-      <AppRoute path="/">
+      <HomeRoute>
         <FeedsPage />
-      </AppRoute>
+      </HomeRoute>
 
       <AppRoute path="/timeline">
         <TimelinePage />
@@ -130,6 +131,24 @@ export function AppRoutes() {
         <ErrorPage error={t("error.not_found")} />
       </AppRoute>
     </Switch>
+  );
+}
+
+function HomeRoute({ children }: { children: ReactNode }) {
+  const siteConfig = useSiteConfig();
+
+  if (siteConfig.homeVersion === "v2") {
+    return (
+      <Route path="/">
+        <HomeV2Page />
+      </Route>
+    );
+  }
+
+  return (
+    <AppRoute path="/">
+      {children}
+    </AppRoute>
   );
 }
 

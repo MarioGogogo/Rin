@@ -12,6 +12,7 @@ export const CLIENT_CONFIG_DEFAULTS = new Map(
     "header.layout": "classic",
     "feed.layout": "list",
     "feed.card_variant": "default",
+    "home.version": "v1",
     "article.width": "normal",
     "article.font_size": "normal",
     "article.line_height": "normal",
