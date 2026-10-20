@@ -38,6 +38,8 @@ export interface Feed {
   pv: number;
   uv: number;
   top?: number;
+  vipOnly?: number;
+  locked?: boolean;
 }
 
 export interface FeedListResponse {
@@ -55,8 +57,9 @@ export interface FeedListResponse {
     avatar: string | null;
     createdAt: string;
     updatedAt: string;
-    pv: number;
-    uv: number;
+    vipOnly?: number;
+    pv?: number;
+    uv?: number;
   }>;
   hasNext: boolean;
 }
@@ -76,6 +79,7 @@ export interface CreateFeedRequest {
   listed: boolean;
   createdAt?: string;
   tags: string[];
+  vipOnly?: boolean;
 }
 
 export interface UpdateFeedRequest {
@@ -88,6 +92,7 @@ export interface UpdateFeedRequest {
   createdAt?: string;
   tags?: string[];
   top?: number;
+  vipOnly?: boolean;
 }
 
 export interface AdjacentFeed {

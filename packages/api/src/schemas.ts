@@ -20,6 +20,7 @@ export const feedCreateSchema = t.Object({
   listed: t.Boolean(),
   createdAt: t.Date({ optional: true }),
   tags: t.Array(t.String()),
+  vipOnly: t.Boolean({ optional: true }),
 });
 
 export const feedUpdateSchema = t.Object({
@@ -32,6 +33,7 @@ export const feedUpdateSchema = t.Object({
   createdAt: t.Date({ optional: true }),
   tags: t.Array(t.String(), { optional: true }),
   top: t.Numeric({ optional: true }),
+  vipOnly: t.Boolean({ optional: true }),
 });
 
 export const feedSetTopSchema = t.Object({

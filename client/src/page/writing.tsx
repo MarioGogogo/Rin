@@ -22,6 +22,7 @@ async function publish({
   summary,
   tags,
   draft,
+  vipOnly,
   createdAt,
   onCompleted,
   showAlert
@@ -32,6 +33,7 @@ async function publish({
   summary: string;
   tags: string[];
   draft: boolean;
+  vipOnly: boolean;
   alias?: string;
   createdAt?: Date;
   onCompleted?: () => void;
@@ -47,6 +49,7 @@ async function publish({
       tags,
       listed,
       draft,
+      vipOnly,
       createdAt: createdAt?.toISOString(),
     }
   );
@@ -73,6 +76,7 @@ async function update({
   tags,
   listed,
   draft,
+  vipOnly,
   createdAt,
   onCompleted,
   showAlert
@@ -85,6 +89,7 @@ async function update({
   summary?: string;
   tags?: string[];
   draft?: boolean;
+  vipOnly?: boolean;
   createdAt?: Date;
   onCompleted?: () => void;
   showAlert: ShowAlertType;
@@ -100,6 +105,7 @@ async function update({
       tags,
       listed,
       draft,
+      vipOnly,
       createdAt: createdAt?.toISOString(),
     }
   );
@@ -127,6 +133,7 @@ export function WritingPage({ id }: { id?: number }) {
   const [alias, setAlias] = cache.useCache("alias", "");
   const [draft, setDraft] = useState(false);
   const [listed, setListed] = useState(true);
+  const [vipOnly, setVipOnly] = useState(false);
   const [content, setContent] = cache.useCache("content", "");
   const [createdAt, setCreatedAt] = useState<Date | undefined>(new Date());
   const [publishing, setPublishing] = useState(false)
@@ -149,6 +156,7 @@ export function WritingPage({ id }: { id?: number }) {
         tags: tagsplit,
         draft,
         listed,
+        vipOnly,
         createdAt,
         onCompleted: () => {
           setPublishing(false)
@@ -173,6 +181,7 @@ export function WritingPage({ id }: { id?: number }) {
         draft,
         alias,
         listed,
+        vipOnly,
         createdAt,
         onCompleted: () => {
           setPublishing(false)
@@ -196,6 +205,7 @@ export function WritingPage({ id }: { id?: number }) {
             if (summary == "") setSummary((data as any).summary || "");
             setListed((data as any).listed === 1);
             setDraft((data as any).draft === 1);
+            setVipOnly(Boolean((data as any).vipOnly));
             setCreatedAt(new Date(data.createdAt));
           }
         });
@@ -287,7 +297,7 @@ export function WritingPage({ id }: { id?: number }) {
             />
           </div>
 
-          <div className="mt-5 grid gap-2 sm:gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(18rem,2fr)]">
+          <div className="mt-5 grid gap-2 sm:gap-3 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(18rem,2fr)]">
             <FlatMetaRow
               className="cursor-pointer rounded-none border-0 bg-transparent px-0 py-2 sm:rounded-2xl sm:border sm:bg-secondary sm:px-4 sm:py-3"
               onClick={() => setDraft(!draft)}
@@ -310,6 +320,18 @@ export function WritingPage({ id }: { id?: number }) {
                 value={listed}
                 setValue={setListed}
                 placeholder={t('listed')}
+              />
+            </FlatMetaRow>
+            <FlatMetaRow
+              className="cursor-pointer rounded-none border-0 bg-transparent px-0 py-2 sm:rounded-2xl sm:border sm:bg-secondary sm:px-4 sm:py-3"
+              onClick={() => setVipOnly(!vipOnly)}
+            >
+              <p>{t('vip_only')}</p>
+              <Checkbox
+                id="vip_only"
+                value={vipOnly}
+                setValue={setVipOnly}
+                placeholder={t('vip_only')}
               />
             </FlatMetaRow>
             <FlatMetaRow className="gap-3 rounded-none border-0 bg-transparent px-0 py-2 sm:rounded-2xl sm:border sm:bg-secondary sm:px-4 sm:py-3 xl:col-span-1">

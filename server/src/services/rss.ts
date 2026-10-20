@@ -208,7 +208,7 @@ async function generateFeed(env: Env, db: DB, frontendUrl: string, c?: AppContex
     // Get published feeds
     const feed_list = c
         ? await profileAsync(c, 'rss_feed_list', () => db.query.feeds.findMany({
-            where: and(eq(feeds.draft, 0), eq(feeds.listed, 1)),
+            where: and(eq(feeds.draft, 0), eq(feeds.listed, 1), eq(feeds.vipOnly, 0)),
             orderBy: [desc(feeds.createdAt), desc(feeds.updatedAt)],
             limit: 20,
             with: {
@@ -216,7 +216,7 @@ async function generateFeed(env: Env, db: DB, frontendUrl: string, c?: AppContex
             },
         }))
         : await db.query.feeds.findMany({
-        where: and(eq(feeds.draft, 0), eq(feeds.listed, 1)),
+        where: and(eq(feeds.draft, 0), eq(feeds.listed, 1), eq(feeds.vipOnly, 0)),
         orderBy: [desc(feeds.createdAt), desc(feeds.updatedAt)],
         limit: 20,
         with: {
