@@ -37,7 +37,7 @@ export function AppRoutes() {
 
   return (
     <Switch>
-      <HomeRoute>
+      <HomeRoute path="/">
         <FeedsPage />
       </HomeRoute>
 
@@ -134,19 +134,19 @@ export function AppRoutes() {
   );
 }
 
-function HomeRoute({ children }: { children: ReactNode }) {
+function HomeRoute({ path, children }: { path: PathPattern; children: ReactNode }) {
   const siteConfig = useSiteConfig();
 
   if (siteConfig.homeVersion === "v2") {
     return (
-      <Route path="/">
+      <Route path={path}>
         <HomeV2Page />
       </Route>
     );
   }
 
   return (
-    <AppRoute path="/">
+    <AppRoute path={path}>
       {children}
     </AppRoute>
   );
