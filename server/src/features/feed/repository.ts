@@ -53,7 +53,8 @@ export async function searchFeedPage(db: DB, options: SearchFeedPageOptions) {
     const searchPattern = `%${escapeLikePattern(trimmed)}%`;
     const searchWhere = or(
         like(feeds.title, searchPattern),
-        like(feeds.content, searchPattern),
+        // VIP 文章正文不参与匹配，否则搜索结果会泄露正文关键词
+        and(eq(feeds.vipOnly, 0), like(feeds.content, searchPattern)),
         like(feeds.summary, searchPattern),
         like(feeds.alias, searchPattern),
     );

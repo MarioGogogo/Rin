@@ -286,7 +286,15 @@ export function FeedPage({ id, TOC, clean }: { id: string, TOC: () => JSX.Elemen
                     ) : null}
                   </div>
                 )}
-                <Markdown content={feed.content} />
+                {(feed as any).locked ? (
+                  <div className="my-4 rounded-2xl border border-amber-200/70 bg-amber-50/60 p-8 text-center dark:border-amber-500/20 dark:bg-amber-500/10">
+                    <i className="ri-lock-2-line text-3xl text-amber-500" aria-hidden="true" />
+                    <p className="mt-3 text-sm font-semibold text-amber-700 dark:text-amber-300">{t('vip_locked.title')}</p>
+                    <p className="mt-1 text-xs leading-relaxed text-amber-600/80 dark:text-amber-300/70">{t('vip_locked.desc')}</p>
+                  </div>
+                ) : (
+                  <Markdown content={feed.content} />
+                )}
                 {reactionEnabled && id !== "about" && <FeedReactions feedId={feed.id} />}
                 <div className="mt-6 flex flex-col gap-2">
                   {hashtags.length > 0 && (

@@ -613,4 +613,93 @@ describe('FeedService', () => {
             expect(res.status).toBe(404);
         });
     });
+
+    describe('VIP-only feeds', () => {
+        async function createVipFeed(content: string) {
+            const createRes = await app.request('/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer mock_token_1',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: 'VIP Feed',
+                    content,
+                    listed: true,
+                    draft: false,
+                    tags: [],
+                    vipOnly: true,
+                }),
+            }, env);
+            expect(createRes.status).toBe(200);
+        }
+
+        it('should not derive summary or cover from body for anonymous visitors', async () => {
+            await createVipFeed('![cover](https://example.com/secret.png)\n\nSecret body text for VIP members only.');
+            const res = await app.request('/?page=1&limit=10', { method: 'GET' }, env);
+            expect(res.status).toBe(200);
+            const data = await res.json() as any;
+            const item = data.data.find((feed: any) => feed.title === 'VIP Feed');
+            expect(item).toBeDefined();
+            expect(item.vipOnly).toBe(1);
+            expect(item.avatar).toBeNull();
+            expect(item.summary).toBe('');
+            expect(item.summary).not.toContain('Secret body');
+        });
+
+        it('should use explicit summary for VIP feeds', async () => {
+            const createRes = await app.request('/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer mock_token_1',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    title: 'VIP Feed 2',
+                    content: 'Secret body',
+                    summary: 'Public teaser',
+                    listed: true,
+                    draft: false,
+                    tags: [],
+                    vipOnly: true,
+                }),
+            }, env);
+            expect(createRes.status).toBe(200);
+
+            const res = await app.request('/?page=1&limit=10', { method: 'GET' }, env);
+            const data = await res.json() as any;
+            const item = data.data.find((feed: any) => feed.title === 'VIP Feed 2');
+            expect(item.summary).toBe('Public teaser');
+        });
+
+        it('should return empty content for anonymous visitors on VIP detail', async () => {
+            await createVipFeed('Secret body text');
+            const listRes = await app.request('/?page=1&limit=10', { method: 'GET' }, env);
+            const listData = await listRes.json() as any;
+            const feedId = listData.data.find((feed: any) => feed.title === 'VIP Feed').id;
+
+            const res = await app.request(`/${feedId}`, { method: 'GET' }, env);
+            expect(res.status).toBe(200);
+            const data = await res.json() as any;
+            expect(data.locked).toBe(true);
+            expect(data.content).toBe('');
+        });
+
+        it('should return full content for admin on VIP detail', async () => {
+            await createVipFeed('Secret body text');
+            const listRes = await app.request('/?page=1&limit=10', {
+                headers: { 'Authorization': 'Bearer mock_token_1' },
+            }, env);
+            const listData = await listRes.json() as any;
+            const feedId = listData.data.find((feed: any) => feed.title === 'VIP Feed').id;
+
+            const res = await app.request(`/${feedId}`, {
+                headers: { 'Authorization': 'Bearer mock_token_1' },
+            }, env);
+            expect(res.status).toBe(200);
+            const data = await res.json() as any;
+            expect(data.locked).toBe(false);
+            expect(data.content).toContain('Secret body');
+        });
+    });
 });

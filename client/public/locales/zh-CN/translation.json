@@ -598,6 +598,14 @@
         "title": "启用朋友们",
         "desc": "开启/关闭顶部导航栏中的「朋友们」入口"
       }
+    },
+    "home_version": {
+      "title": "首页版本",
+      "desc": "选择首页的布局形式。v2 为新版首页，包含个人介绍区与卡片网格。",
+      "options": {
+        "v1": "经典版 (v1)",
+        "v2": "新版 (v2)"
+      }
     }
   },
   "sitename": "站点名称",
@@ -831,5 +839,51 @@
   "sort_latest": "最新",
   "sort_popular": "热门",
   "total_tags": "共 {{count}} 个标签",
-  "anonymous": "匿名"
+  "anonymous": "匿名",
+  "home_v2": {
+    "nav": {
+      "articles": "文章",
+      "timeline": "时间轴",
+      "tags": "标签",
+      "about": "关于",
+      "search": "搜索..."
+    },
+    "hero": {
+      "badge": "保持好奇与折腾 · 开放持续创作",
+      "greeting": "嗨，我是",
+      "total$count_one": "共发布 {{count}} 篇文章",
+      "total$count_other": "共发布 {{count}} 篇文章",
+      "footnote": "持续维护 · {{year}}"
+    },
+    "card": {
+      "untitled": "无标题",
+      "published": "发布",
+      "updated": "更新",
+      "vip_badge": "VIP 专属",
+      "vip_summary_hint": "这是一篇 VIP 专属文章，订阅后可解锁完整内容。",
+      "reads": "阅读",
+      "unlock_read": "解锁阅读",
+      "read_more": "阅读全文"
+    },
+    "category": {
+      "all": "全部"
+    },
+    "pagination": {
+      "prev": "上一页",
+      "next": "下一页"
+    },
+    "sidebar": {
+      "latest": "最新发布",
+      "tags": "标签集市",
+      "tags_all": "全部",
+      "rss_title": "RSS 订阅",
+      "rss_desc": "新文章发布的第一时间，推送到你的阅读器。",
+      "rss_action": "订阅本站"
+    }
+  },
+  "vip_only": "VIP 专属",
+  "vip_locked": {
+    "title": "本文为 VIP 专属文章",
+    "desc": "完整内容仅对订阅成员开放，敬请期待。"
+  }
 }

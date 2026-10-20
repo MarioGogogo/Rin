@@ -598,6 +598,14 @@
         "title": "Enable Friends",
         "desc": "Show/hide the Friends tab in the top navigation bar"
       }
+    },
+    "home_version": {
+      "title": "Home version",
+      "desc": "Choose the homepage layout. v2 is the redesigned homepage with a hero intro and a card grid.",
+      "options": {
+        "v1": "Classic (v1)",
+        "v2": "Redesign (v2)"
+      }
     }
   },
   "sitename": "Site Name",
@@ -831,5 +839,51 @@
   "sort_latest": "Latest",
   "sort_popular": "Popular",
   "total_tags": "Total {{count}} tags",
-  "anonymous": "Anonymous"
+  "anonymous": "Anonymous",
+  "home_v2": {
+    "nav": {
+      "articles": "Articles",
+      "timeline": "Timeline",
+      "tags": "Tags",
+      "about": "About",
+      "search": "Search..."
+    },
+    "hero": {
+      "badge": "Stay curious · Keep creating",
+      "greeting": "Hi, I'm",
+      "total$count_one": "{{count}} article published",
+      "total$count_other": "{{count}} articles published",
+      "footnote": "Continuously maintained · {{year}}"
+    },
+    "card": {
+      "untitled": "Untitled",
+      "published": "Published",
+      "updated": "Updated",
+      "vip_badge": "VIP Exclusive",
+      "vip_summary_hint": "This is a VIP-only article. Subscribe to unlock the full content.",
+      "reads": "reads",
+      "unlock_read": "Unlock",
+      "read_more": "Read more"
+    },
+    "category": {
+      "all": "All"
+    },
+    "pagination": {
+      "prev": "Prev",
+      "next": "Next"
+    },
+    "sidebar": {
+      "latest": "Latest Posts",
+      "tags": "Tag Market",
+      "tags_all": "All",
+      "rss_title": "Subscribe via RSS",
+      "rss_desc": "Get new articles delivered to your reader the moment they are published.",
+      "rss_action": "Subscribe"
+    }
+  },
+  "vip_only": "VIP only",
+  "vip_locked": {
+    "title": "This article is for VIP members only",
+    "desc": "The full content is available to subscribed members. Stay tuned for access."
+  }
 }

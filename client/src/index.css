@@ -27,6 +27,21 @@ body {
   font-family: var(--article-font-family, inherit);
 }
 
+/* 首页 v2（docs/index.html 复刻）：字体限定在 .home-v2 作用域，不影响其他页面 */
+.home-v2 {
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+.home-v2 kbd,
+.home-v2 .font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.home-v2 ::selection {
+  background-color: rgb(99 102 241);
+  color: rgb(255 255 255);
+}
+
 textarea:focus {
   outline: none;
 }

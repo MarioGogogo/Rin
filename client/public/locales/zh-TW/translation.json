@@ -598,6 +598,14 @@
         "title": "啟用朋友們",
         "desc": "開啟/關閉頂部導航欄中的「朋友們」入口"
       }
+    },
+    "home_version": {
+      "title": "首頁版本",
+      "desc": "選擇首頁的版面形式。v2 為新版首頁，包含個人介紹區與卡片網格。",
+      "options": {
+        "v1": "經典版 (v1)",
+        "v2": "新版 (v2)"
+      }
     }
   },
   "sitename": "網站名稱",
@@ -831,5 +839,51 @@
   "sort_latest": "最新",
   "sort_popular": "熱門",
   "total_tags": "共 {{count}} 個標籤",
-  "anonymous": "匿名"
+  "anonymous": "匿名",
+  "home_v2": {
+    "nav": {
+      "articles": "文章",
+      "timeline": "時間軸",
+      "tags": "標籤",
+      "about": "關於",
+      "search": "搜尋..."
+    },
+    "hero": {
+      "badge": "保持好奇與折騰 · 開放持續創作",
+      "greeting": "嗨，我是",
+      "total$count_one": "共發布 {{count}} 篇文章",
+      "total$count_other": "共發布 {{count}} 篇文章",
+      "footnote": "持續維護 · {{year}}"
+    },
+    "card": {
+      "untitled": "無標題",
+      "published": "發布",
+      "updated": "更新",
+      "vip_badge": "VIP 專屬",
+      "vip_summary_hint": "這是一篇 VIP 專屬文章，訂閱後可解鎖完整內容。",
+      "reads": "閱讀",
+      "unlock_read": "解鎖閱讀",
+      "read_more": "閱讀全文"
+    },
+    "category": {
+      "all": "全部"
+    },
+    "pagination": {
+      "prev": "上一頁",
+      "next": "下一頁"
+    },
+    "sidebar": {
+      "latest": "最新發布",
+      "tags": "標籤市集",
+      "tags_all": "全部",
+      "rss_title": "RSS 訂閱",
+      "rss_desc": "新文章發布的第一時間，推送到你的閱讀器。",
+      "rss_action": "訂閱本站"
+    }
+  },
+  "vip_only": "VIP 專屬",
+  "vip_locked": {
+    "title": "本文為 VIP 專屬文章",
+    "desc": "完整內容僅對訂閱成員開放，敬請期待。"
+  }
 }

@@ -39,7 +39,7 @@ export function TagService(): Hono {
                     with: {
                         feed: {
                             columns: {
-                                id: true, title: true, summary: true, content: true, 
+                                id: true, title: true, summary: true, content: true, vipOnly: true,
                                 createdAt: true, updatedAt: true, draft: false, listed: false
                             },
                             with: {
@@ -56,10 +56,15 @@ export function TagService(): Hono {
             }
         }));
         
+        const uid = c.get('uid');
         const tagFeeds = tag?.feeds.map((tagFeed: any) => {
             if (!tagFeed.feed) return null;
+            // VIP 文章：未登录访客不返回正文
+            const locked = Boolean(tagFeed.feed.vipOnly) && !uid;
             return {
                 ...tagFeed.feed,
+                content: locked ? '' : tagFeed.feed.content,
+                locked,
                 hashtags: tagFeed.feed.hashtags.map((hashtag: any) => hashtag.hashtag)
             };
         }).filter((feed: any) => feed !== null);

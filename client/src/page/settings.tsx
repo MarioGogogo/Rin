@@ -32,6 +32,7 @@ import { SettingsPreviewCard } from "../components/settings-preview-card";
 import { FEED_CARD_VARIANTS, normalizeFeedCardVariant } from "../components/feed-card-options";
 import { FeedCardPreview } from "../components/feed-card-preview";
 import { FEED_LAYOUT_OPTIONS, normalizeFeedLayout } from "../components/feed-layout-options";
+import { HOME_VERSION_OPTIONS, normalizeHomeVersion } from "../components/home-version-options";
 import { useSiteConfig } from "../hooks/useSiteConfig";
 import { applyThemeColor, normalizeThemeColor } from "../utils/theme-color";
 import { AISummarySettings } from "./settings-ai";
@@ -116,6 +117,7 @@ export function Settings() {
   const hasUnsavedChanges = !areSettingsDraftsEqual(draft, initialDraft);
   const themeColorValue = normalizeThemeColor(String(clientConfig.get("theme.color") ?? "#fc466b"));
   const feedLayoutValue = normalizeFeedLayout(String(clientConfig.get("feed.layout") ?? "list"));
+  const homeVersionValue = normalizeHomeVersion(String(clientConfig.get("home.version") ?? "v1"));
   const feedCardVariantValue = normalizeFeedCardVariant(String(clientConfig.get("feed.card_variant") ?? "default"));
   const articleWidthValue = normalizeArticleWidth(String(clientConfig.get("article.width") ?? "normal"));
   const articleFontSizeValue = normalizeArticleFontSize(String(clientConfig.get("article.font_size") ?? "normal"));
@@ -328,6 +330,31 @@ export function Settings() {
                         label: t(`settings.feed_layout.options.${value}`),
                       }))}
                       placeholder={t("settings.feed_layout.title")}
+                      emptyLabel={t("no_more")}
+                      searchable={false}
+                    />
+                  }
+                />
+              </div>
+              <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
+                <SettingsCardRow
+                  header={
+                    <SettingsCardHeader
+                      title={t("settings.home_version.title")}
+                      description={t("settings.home_version.desc")}
+                    />
+                  }
+                  action={
+                    <SearchableSelect
+                      value={homeVersionValue}
+                      onChange={(value) => {
+                        setConfigValue("client", "home.version", value);
+                      }}
+                      options={HOME_VERSION_OPTIONS.map((value) => ({
+                        value,
+                        label: t(`settings.home_version.options.${value}`),
+                      }))}
+                      placeholder={t("settings.home_version.title")}
                       emptyLabel={t("no_more")}
                       searchable={false}
                     />

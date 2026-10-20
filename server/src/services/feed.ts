@@ -39,6 +39,19 @@ function parseFeedId(value: string): number | null {
     return Number.isSafeInteger(id) ? id : null;
 }
 
+// VIP 文章的正文不得进入列表/搜索/相邻文章等共享缓存的派生结果（摘要、封面）。
+// 输出只取决于记录本身，与访客身份无关，因此缓存安全。
+function feedExcerpt(feed: { summary: string; content: string; vipOnly: number }, length: number) {
+    if (feed.vipOnly) {
+        return feed.summary;
+    }
+    if (feed.summary.length > 0) {
+        return feed.summary;
+    }
+    const plainText = stripMarkdown(feed.content);
+    return plainText.length > length ? plainText.slice(0, length) : plainText;
+}
+
 function parsePositiveInteger(value: string | undefined, fallback: number, maximum?: number) {
     if (!value) {
         return fallback;
@@ -121,16 +134,12 @@ export function FeedService(): Hono<{
             orderBy: [desc(feeds.top), desc(feeds.createdAt), desc(feeds.updatedAt)],
             offset: page_num * limit_num,
             limit: limit_num + 1,
-        }))).map(({ content, hashtags, summary, ...other }: any) => {
-            const avatar = extractImageWithMetadata(content);
-            const plainText = stripMarkdown(content);
-            return {
-                summary: summary.length > 0 ? summary : plainText.length > 100 ? plainText.slice(0, 100) : plainText,
-                hashtags: hashtags.map(({ hashtag }: any) => hashtag),
-                avatar,
-                ...other
-            };
-        });
+        }))).map(({ content, hashtags, summary, ...other }: any) => ({
+            summary: feedExcerpt({ summary, content, vipOnly: other.vipOnly }, 100),
+            hashtags: hashtags.map(({ hashtag }: any) => hashtag),
+            avatar: other.vipOnly ? null : extractImageWithMetadata(content),
+            ...other
+        }));
 
         let hasNext = false;
         if (feed_list.length === limit_num + 1) {
@@ -166,7 +175,7 @@ export function FeedService(): Hono<{
         const serverConfig = c.get('serverConfig');
         const env = c.get('env');
         const uid = c.get('uid');
-        const { title, alias, listed, content, summary, draft, tags, createdAt } = body;
+        const { title, alias, listed, content, summary, draft, tags, createdAt, vipOnly } = body;
 
         const exist = await profileAsync(c, 'feed_create_existing', () => findDuplicateFeed(db, title, content));
 
@@ -191,6 +200,7 @@ export function FeedService(): Hono<{
             alias,
             listed: listed ? 1 : 0,
             draft: draft ? 1 : 0,
+            vipOnly: vipOnly ? 1 : 0,
             createdAt: date,
             updatedAt: date
         }));
@@ -302,7 +312,9 @@ export function FeedService(): Hono<{
             await profileAsync(c, 'feed_detail_visit_insert', () => db.insert(visits).values({ feedId: feed.id, ip: ip }));
         }
 
-        return c.json({ ...other, hashtags: hashtags_flatten, pv, uv });
+        // VIP 文章：未登录访客不返回正文。门控在共享缓存读取之后做，缓存本身保留完整记录。
+        const locked = Boolean(feed.vipOnly) && !uid;
+        return c.json({ ...other, content: locked ? '' : other.content, locked, hashtags: hashtags_flatten, pv, uv });
     });
 
     // GET /feed/adjacent/:id
@@ -334,10 +346,7 @@ export function FeedService(): Hono<{
         function formatAndCacheData(feed: any, feedDirection: "previous_feed" | "next_feed") {
             if (feed) {
                 const hashtags_flatten = feed.hashtags.map((f: any) => f.hashtag);
-                const plainText = stripMarkdown(feed.content);
-                const summary = feed.summary.length > 0
-                    ? feed.summary
-                    : plainText.length > 50 ? plainText.slice(0, 50) : plainText;
+                const summary = feedExcerpt(feed, 50);
                 const cacheKey = `${feed.id}_${feedDirection}_${id_num}`;
                 const cacheData = {
                     id: feed.id,
@@ -406,7 +415,7 @@ export function FeedService(): Hono<{
         const admin = c.get('admin');
         const uid = c.get('uid')!;
         const id = c.req.param('id');
-        const { title, listed, content, summary, alias, draft, top, tags, createdAt } = body;
+        const { title, listed, content, summary, alias, draft, top, tags, createdAt, vipOnly } = body;
 
         const id_num = parseFeedId(id);
         if (id_num === null) {
@@ -438,6 +447,7 @@ export function FeedService(): Hono<{
             top,
             listed: listed ? 1 : 0,
             draft: draft === undefined ? undefined : draft ? 1 : 0,
+            vipOnly: vipOnly === undefined ? undefined : vipOnly ? 1 : 0,
             createdAt: createdAt ? new Date(createdAt) : undefined,
             updatedAt: updateTime
         }));
@@ -549,14 +559,11 @@ export function SearchService(): Hono<{
                 pageIndex: page_num,
                 limit: limit_num,
             });
-            const data = pageResult.rows.map(({ content, hashtags, summary, ...other }: any) => {
-                const plainText = stripMarkdown(content);
-                return {
-                    summary: summary.length > 0 ? summary : plainText.length > 100 ? plainText.slice(0, 100) : plainText,
-                    hashtags: hashtags.map(({ hashtag }: any) => hashtag),
-                    ...other,
-                };
-            });
+            const data = pageResult.rows.map(({ content, hashtags, summary, ...other }: any) => ({
+                summary: feedExcerpt({ summary, content, vipOnly: other.vipOnly }, 100),
+                hashtags: hashtags.map(({ hashtag }: any) => hashtag),
+                ...other,
+            }));
 
             return { size: pageResult.size, data, hasNext: pageResult.hasNext };
         }));

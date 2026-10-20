@@ -72,4 +72,22 @@ describe("SearchService", () => {
         expect(publicResult.data).toHaveLength(1);
         expect(publicResult.data[0].title).toBe("Shared result");
     });
+
+    it("does not match VIP-only feed bodies for anonymous visitors", async () => {
+        await db.insert(feeds).values([
+            { title: "VIP article", content: "UniqueSecretKeyword body", summary: "", uid: 1, draft: 0, listed: 1, vipOnly: 1 },
+        ]);
+
+        const byBody = await app.request("/UniqueSecretKeyword", {}, env);
+        const byBodyResult = await byBody.json() as any;
+        expect(byBody.status).toBe(200);
+        expect(byBodyResult.size).toBe(0);
+        expect(byBodyResult.data).toEqual([]);
+
+        const byTitle = await app.request("/VIP", {}, env);
+        const byTitleResult = await byTitle.json() as any;
+        expect(byTitle.status).toBe(200);
+        expect(byTitleResult.size).toBe(1);
+        expect(byTitleResult.data[0].summary).toBe("");
+    });
 });
