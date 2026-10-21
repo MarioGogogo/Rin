@@ -16,6 +16,24 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: '../dist/client',
       emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          // 按库分包：重型依赖只在对应路由的 chunk 里被引用，独立成块便于按需加载与长缓存。
+          // 注意顺序：先判具体库名，再判泛 react（react-syntax-highlighter 等含 "react" 子串）。
+          manualChunks(id: string) {
+            if (!id.includes('node_modules')) return;
+            if (id.includes('mermaid')) return 'mermaid';
+            if (id.includes('monaco-editor')) return 'monaco';
+            if (id.includes('katex')) return 'katex';
+            if (id.includes('react-syntax-highlighter') || id.includes('refractor') || id.includes('prismjs')) {
+              return 'syntax-highlighter';
+            }
+            if (/(^|\/)node_modules\/(react|react-dom|scheduler|react-i18next|i18next|i18next-browser-languagedetector|i18next-http-backend|wouter)\//.test(id)) {
+              return 'vendor';
+            }
+          },
+        },
+      },
     },
     plugins: [
       react(),

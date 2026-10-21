@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { useContext } from "react";
+import { lazy, Suspense, useContext } from "react";
+import ReactLoading from "react-loading";
 import type { DefaultParams, PathPattern } from "wouter";
 import { Route, Switch } from "wouter";
 import { AdminLayout } from "../components/admin-layout";
@@ -11,33 +12,49 @@ import { getHeaderLayoutDefinition } from "../components/site-header/layout-regi
 import { Tips, TipsPage } from "../components/tips";
 import useTableOfContents from "../hooks/useTableOfContents";
 import { useSiteConfig } from "../hooks/useSiteConfig";
-import { CallbackPage } from "../page/callback";
-import { CompatTasksPage } from "../page/compat-tasks";
 import { ErrorPage } from "../page/error";
-import { FeedPage, TOCHeader } from "../page/feed";
-import { FeedsPage } from "../page/feeds";
-import { HomeV2Page } from "../components/home-v2";
-import { FriendsPage } from "../page/friends";
-import { HealthPage } from "../page/health";
-import { HashtagPage } from "../page/hashtag";
-import { HashtagsPage } from "../page/hashtags";
-import { LoginPage } from "../page/login";
-import { MomentsPage } from "../page/moments";
-import { ProfilePage } from "../page/profile";
-import { QueueStatusPage } from "../page/queue-status";
-import { SearchPage } from "../page/search";
-import { Settings } from "../page/settings";
-import { TimelinePage } from "../page/timeline";
-import { WritingPage } from "../page/writing";
+import { TOCHeader } from "../page/feed-toc-header";
 import { ProfileContext } from "../state/profile";
 import { tryInt } from "../utils/int";
 import { useTranslation } from "react-i18next";
+
+// 页面级代码分割：重型依赖（mermaid/monaco/语法高亮/katex）只随对应路由按需加载
+const CallbackPage = lazy(() => import("../page/callback").then(({ CallbackPage }) => ({ default: CallbackPage })));
+const CompatTasksPage = lazy(() =>
+  import("../page/compat-tasks").then(({ CompatTasksPage }) => ({ default: CompatTasksPage })),
+);
+const FeedPage = lazy(() => import("../page/feed").then(({ FeedPage }) => ({ default: FeedPage })));
+const FeedsPage = lazy(() => import("../page/feeds").then(({ FeedsPage }) => ({ default: FeedsPage })));
+const HomeV2Page = lazy(() => import("../components/home-v2").then(({ HomeV2Page }) => ({ default: HomeV2Page })));
+const FriendsPage = lazy(() => import("../page/friends").then(({ FriendsPage }) => ({ default: FriendsPage })));
+const HealthPage = lazy(() => import("../page/health").then(({ HealthPage }) => ({ default: HealthPage })));
+const HashtagPage = lazy(() => import("../page/hashtag").then(({ HashtagPage }) => ({ default: HashtagPage })));
+const HashtagsPage = lazy(() => import("../page/hashtags").then(({ HashtagsPage }) => ({ default: HashtagsPage })));
+const LoginPage = lazy(() => import("../page/login").then(({ LoginPage }) => ({ default: LoginPage })));
+const MomentsPage = lazy(() => import("../page/moments").then(({ MomentsPage }) => ({ default: MomentsPage })));
+const ProfilePage = lazy(() => import("../page/profile").then(({ ProfilePage }) => ({ default: ProfilePage })));
+const QueueStatusPage = lazy(() =>
+  import("../page/queue-status").then(({ QueueStatusPage }) => ({ default: QueueStatusPage })),
+);
+const SearchPage = lazy(() => import("../page/search").then(({ SearchPage }) => ({ default: SearchPage })));
+const Settings = lazy(() => import("../page/settings").then(({ Settings }) => ({ default: Settings })));
+const TimelinePage = lazy(() => import("../page/timeline").then(({ TimelinePage }) => ({ default: TimelinePage })));
+const WritingPage = lazy(() => import("../page/writing").then(({ WritingPage }) => ({ default: WritingPage })));
+
+function RouteFallback() {
+  return (
+    <div className="flex justify-center py-24">
+      <ReactLoading type="spin" color="#FC466B" width={32} height={32} />
+    </div>
+  );
+}
 
 export function AppRoutes() {
   const { t } = useTranslation();
 
   return (
-    <Switch>
+    <Suspense fallback={<RouteFallback />}>
+      <Switch>
       <HomeRoute path="/">
         <FeedsPage />
       </HomeRoute>
@@ -131,7 +148,8 @@ export function AppRoutes() {
       <AppRoute>
         <ErrorPage error={t("error.not_found")} />
       </AppRoute>
-    </Switch>
+      </Switch>
+    </Suspense>
   );
 }
 
