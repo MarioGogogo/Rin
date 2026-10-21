@@ -310,6 +310,9 @@ export function Settings() {
                     />
                   ))}
                 </div>
+                {homeVersionValue === "v2" ? (
+                  <p className="mt-3 text-xs t-secondary">{t("settings.header_layout.v2_hint")}</p>
+                ) : null}
               </SettingsCardBody>
               <div className="mt-4 border-t border-black/5 pt-4 dark:border-white/10">
                 <SettingsCardRow

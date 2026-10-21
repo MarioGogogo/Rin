@@ -35,7 +35,7 @@ export function Modal({
       isOpen={isOpen}
       onRequestClose={onRequestClose}
       contentLabel={contentLabel}
-      closeTimeoutMS={160}
+      closeTimeoutMS={200}
       shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
       shouldCloseOnEsc={shouldCloseOnEsc}
       overlayClassName={{

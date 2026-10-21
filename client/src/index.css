@@ -32,6 +32,50 @@ body {
   font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
+/* v2 路由切换：内容区淡入上移过渡（见 v2-layout 的 PageTransition） */
+@keyframes v2-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.v2-page-enter {
+  animation: v2-page-in 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* v2 搜索弹窗面板弹出动效（叠加在 Modal 自带过渡之上，轻微过冲更灵动） */
+@keyframes v2-pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.v2-pop-in {
+  animation: v2-pop-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: top center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-page-enter,
+  .v2-pop-in {
+    animation: none;
+  }
+}
+
 .home-v2 kbd,
 .home-v2 .font-mono {
   font-family: "JetBrains Mono", ui-monospace, monospace;

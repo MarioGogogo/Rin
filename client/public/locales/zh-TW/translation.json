@@ -480,7 +480,8 @@
       "preview": {
         "classic": "品牌、置中導覽與操作區維持目前這套平衡配置。",
         "compact": "幾乎移除所有裝飾，只保留最必要的資訊與操作。"
-      }
+      },
+      "v2_hint": "首頁 v2 版本使用全站統一的 v2 Header，此設定在 v2 模式下不生效。"
     },
     "header_behavior": {
       "title": "Header 顯示方式",

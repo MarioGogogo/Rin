@@ -480,7 +480,8 @@
       "preview": {
         "classic": "Brand, centered navigation, and actions stay balanced like the current header.",
         "compact": "A text-first header with almost no decoration, keeping only the essential information."
-      }
+      },
+      "v2_hint": "The home version v2 uses its own site-wide header, so this setting is ignored while v2 is active."
     },
     "header_behavior": {
       "title": "Header behavior",

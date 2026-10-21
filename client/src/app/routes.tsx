@@ -6,6 +6,7 @@ import { AdminLayout } from "../components/admin-layout";
 import Footer from "../components/footer";
 import { Header } from "../components/header";
 import { Padding } from "../components/padding";
+import { getEffectiveHeaderLayout } from "../components/site-header/layout-options";
 import { getHeaderLayoutDefinition } from "../components/site-header/layout-registry";
 import { Tips, TipsPage } from "../components/tips";
 import useTableOfContents from "../hooks/useTableOfContents";
@@ -137,17 +138,10 @@ export function AppRoutes() {
 function HomeRoute({ path, children }: { path: PathPattern; children: ReactNode }) {
   const siteConfig = useSiteConfig();
 
-  if (siteConfig.homeVersion === "v2") {
-    return (
-      <Route path={path}>
-        <HomeV2Page />
-      </Route>
-    );
-  }
-
+  // v2 首页同样走站点 shell（Header/Padding/Footer），只是内容不同
   return (
     <AppRoute path={path}>
-      {children}
+      {siteConfig.homeVersion === "v2" ? <HomeV2Page /> : children}
     </AppRoute>
   );
 }
@@ -176,7 +170,7 @@ function AppRoute({
     <Route path={path}>
       {(params) => {
         const resolvedContent = typeof content === "function" ? content(params) : content;
-        const layoutDefinition = getHeaderLayoutDefinition(siteConfig.headerLayout);
+        const layoutDefinition = getHeaderLayoutDefinition(getEffectiveHeaderLayout(siteConfig));
 
         return layoutDefinition.renderRouteShell({
           header: <Header>{headerComponent}</Header>,

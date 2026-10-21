@@ -93,8 +93,10 @@
   padding: clamp(1rem, 4vw, 3rem);
   background: var(--rin-overlay-color);
   opacity: 0;
-  backdrop-filter: blur(8px);
-  transition: opacity 160ms ease;
+  backdrop-filter: blur(0px);
+  transition:
+    opacity 200ms ease,
+    backdrop-filter 240ms ease;
 }
 
 .rin-modal-overlay--top {
@@ -104,10 +106,12 @@
 
 .rin-modal-overlay--after-open {
   opacity: 1;
+  backdrop-filter: blur(8px);
 }
 
 .rin-modal-overlay--before-close {
   opacity: 0;
+  backdrop-filter: blur(0px);
 }
 
 .rin-modal-content {
